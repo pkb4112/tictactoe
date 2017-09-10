@@ -54,9 +54,9 @@ class GameBoard
     	    win=[true,false]
     	  elsif @board[0][2] == "X" && @board[1][1] == "X" && @board[2][0] == "X"
     	    win=[true,false]
-    	  elsif @board[0][0] == "X" && @board[1][1] == "X" && @board[2][2] == "O"
+    	  elsif @board[0][0] == "0" && @board[1][1] == "0" && @board[2][2] == "O"
     	    win=[false,true]
-    	  elsif @board[0][2] == "X" && @board[1][1] == "X" && @board[2][0] == "O"
+    	  elsif @board[0][2] == "0" && @board[1][1] == "0" && @board[2][0] == "O"
     	    win=[false,true]
     	  end
     	end
@@ -67,6 +67,7 @@ class GameBoard
         if @board[0][x] == "X" && @board[1][x] == "X" && @board[2][x] == "X"  #Columns
     	  win=[true,false]
     	elsif @board[0][x] == "O" && @board[1][x] == "O" && @board[2][x] == "O" 
+    	 win=[false,true]
     	end
       end
     	     	
@@ -136,21 +137,25 @@ class TicTacToe
 
   def get_player_input  
     if @turn_count%2 == 0 
-      player = @player1.name.to_s
-      player_id = 1
+      player = @player1
+      player_id=1
     else 
-      player = @player2.name.to_s
-      player_id = 2
+      player = @player2
+      player_id=2
     end
+    
+    puts "#{player.name}: Enter Grid Location in Form 'X,Y'"
+    begin
+      player_input = gets.chomp
+      if /\d+/.match(player_input)
+        x_val = /\A(\d)/.match(player_input)[0].to_i
+        y_val = /(\d)\z/.match(player_input)[0].to_i
+        return [x_val,y_val,player_id]
 
-    puts "#{player}: Enter Grid Location in Form 'X,Y'"
-    player_input = gets.chomp
-    if /\d+/.match(player_input)
-      x_val = /\A(\d)/.match(player_input)[0].to_i
-      y_val = /(\d)\z/.match(player_input)[0].to_i
-      return [x_val,y_val,player_id]
-
-    else
+      else
+    	puts "Invalid Input"
+      end
+    rescue
     	puts "Invalid Input"
     end
 
@@ -171,21 +176,20 @@ class TicTacToe
   end
 
 #Checks to see if the space on the board the player has selected is valid
-    def check_space?(grid_loc)
-      valid=false
-      x_val = grid_loc[0]
-      y_val = grid_loc[1]
-
+  def check_space?(input_loc)
+    valid=false
+    begin
+      x_val = input_loc[0]
+      y_val = input_loc[1]
       if @tic.board[x_val][y_val] == "*"
-        valid= true
+        valid=true
       end
-    	
-      return valid
+    rescue
     end
-    
-
-
-
+    	
+    return valid
+  end
+   
 
 end #TicTacToe class end
 game1=TicTacToe.new
