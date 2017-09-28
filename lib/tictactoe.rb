@@ -1,4 +1,4 @@
-
+#TicTacToe 09/09/17 - The Odin Project 
 
 #This is the class for methods/variables regarding player info and actions
 class Player
@@ -7,15 +7,14 @@ class Player
 
   def get_name
   	if block_given?
-  	  yield
+  	  yield          # Allows specification of Player 1 or 2
   	else 
       "Enter Player Name"
     end
-
     self.name = gets.chomp.to_s
   end
 
-end #Players class end
+end #Player class end
 
 #This is the class for constructing and modifying the gameboard
 class GameBoard
@@ -23,9 +22,9 @@ class GameBoard
   attr_accessor :x,:y,:board
 
 #Initializes a new GameBoard
-  def initialize(x=3)
+  def initialize(x=3,y=3)
     @x=x
-    @y=x                #X should equal Y all the time anyway
+    @y=y                
 	draw_new
   end
 
@@ -54,9 +53,9 @@ class GameBoard
     	    win=[true,false]
     	  elsif @board[0][2] == "X" && @board[1][1] == "X" && @board[2][0] == "X"
     	    win=[true,false]
-    	  elsif @board[0][0] == "0" && @board[1][1] == "0" && @board[2][2] == "O"
+    	  elsif @board[0][0] == "O" && @board[1][1] == "O" && @board[2][2] == "O"
     	    win=[false,true]
-    	  elsif @board[0][2] == "0" && @board[1][1] == "0" && @board[2][0] == "O"
+    	  elsif @board[0][2] == "O" && @board[1][1] == "O" && @board[2][0] == "O"
     	    win=[false,true]
     	  end
     	end
@@ -129,6 +128,21 @@ class TicTacToe
     end
   end
 
+#Checks to see if the space on the board the player has selected is valid
+  def check_space?(input_loc)
+    valid=false
+    begin
+      x_val = input_loc[0]
+      y_val = input_loc[1]
+      if @tic.board[x_val][y_val] == "*"
+        valid=true
+      end
+    rescue
+    end
+      
+    return valid
+  end
+   
  
 
   protected
@@ -175,21 +189,8 @@ class TicTacToe
     	end
   end
 
-#Checks to see if the space on the board the player has selected is valid
-  def check_space?(input_loc)
-    valid=false
-    begin
-      x_val = input_loc[0]
-      y_val = input_loc[1]
-      if @tic.board[x_val][y_val] == "*"
-        valid=true
-      end
-    rescue
-    end
-    	
-    return valid
-  end
-   
+
 
 end #TicTacToe class end
-game1=TicTacToe.new
+
+#game1=TicTacToe.new
